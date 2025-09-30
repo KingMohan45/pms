@@ -1,0 +1,7 @@
+<%# locals: (account:, url:) %>
+
+<%= render "accounts/form", account: account, url: url do |form| %>
+  <%= form.select :subtype,
+                 ChitFund::SUBTYPES.map { |k, v| [v[:long], k] },
+                 { label: true, prompt: t("chit_funds.form.subtype_prompt"), include_blank: t("chit_funds.form.none") } %>
+<% end %>

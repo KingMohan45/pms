@@ -1,0 +1,10 @@
+---
+en:
+  chit_funds:
+    edit:
+      edit: Edit %{account}
+    form:
+      none: None
+      subtype_prompt: Select chit fund type
+    new:
+      title: Enter account balance

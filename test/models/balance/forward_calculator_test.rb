@@ -99,8 +99,8 @@ class Balance::ForwardCalculatorTest < ActiveSupport::TestCase
     )
   end
 
-  test "cash-only accounts (depository, credit card) use valuations where cash balance equals total balance" do
-    [ Depository, CreditCard ].each do |account_type|
+  test "cash-only accounts (depository, credit card, chit fund) use valuations where cash balance equals total balance" do
+    [ Depository, CreditCard, ChitFund ].each do |account_type|
       account = create_account_with_ledger(
         account: { type: account_type, currency: "USD" },
         entries: [
@@ -201,7 +201,7 @@ class Balance::ForwardCalculatorTest < ActiveSupport::TestCase
   end
 
   # ------------------------------------------------------------------------------------------------
-  # All Cash accounts (Depository, CreditCard)
+  # All Cash accounts (Depository, CreditCard, ChitFund)
   # ------------------------------------------------------------------------------------------------
 
   test "transactions on depository accounts affect cash balance" do
