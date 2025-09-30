@@ -435,15 +435,15 @@ class Balance::ForwardCalculatorTest < ActiveSupport::TestCase
     )
   end
 
-  test "non cash accounts can only use valuations and transactions will be recorded but ignored for balance calculation" do
+  test "non cash accounts can use transactions to update balance" do
     [ Property, Vehicle, OtherAsset, OtherLiability ].each do |account_type|
       account = create_account_with_ledger(
         account: { type: account_type, currency: "USD" },
         entries: [
           { type: "opening_anchor", date: 3.days.ago.to_date, balance: 500000 },
 
-          # Will be ignored for balance calculation due to account type of non-cash
-          { type: "transaction", date: 2.days.ago.to_date, amount: -50000 }
+          # Transaction now affects balance calculation for non-cash accounts
+          { type: "transaction", date: 2.days.ago.to_date, amount: -50000 } # Inflow of $50,000
         ]
       )
 
@@ -461,9 +461,9 @@ class Balance::ForwardCalculatorTest < ActiveSupport::TestCase
           },
           {
             date: 2.days.ago.to_date,
-            legacy_balances: { balance: 500000, cash_balance: 0 },
-            balances: { start: 500000, start_cash: 0, start_non_cash: 500000, end_cash: 0, end_non_cash: 500000, end: 500000 },
-            flows: 0, # Despite having a transaction, non-cash accounts ignore it for balance calculation
+            legacy_balances: { balance: 550000, cash_balance: 0 },
+            balances: { start: 500000, start_cash: 0, start_non_cash: 500000, end_cash: 0, end_non_cash: 550000, end: 550000 },
+            flows: { non_cash_inflows: 50000, non_cash_outflows: 0 }, # Transaction now affects non-cash balance
             adjustments: 0
           }
         ]

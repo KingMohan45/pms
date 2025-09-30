@@ -24,19 +24,21 @@ class Balance::BaseCalculator
         total_balance - holdings_value_for_date(date)
       elsif account.balance_type == :cash
         total_balance
+      elsif account.balance_type == :non_cash
+        0
       else
         0
       end
     end
 
     def cash_adjustments_for_date(start_cash, end_cash, net_cash_flows)
-      return 0 unless account.balance_type != :non_cash
+      return 0 unless account.balance_type == :cash
 
       end_cash - start_cash - net_cash_flows
     end
 
     def non_cash_adjustments_for_date(start_non_cash, end_non_cash, non_cash_flows)
-      return 0 unless account.balance_type == :non_cash
+      return 0 unless account.balance_type == :non_cash || account.balance_type == :investment
 
       end_non_cash - start_non_cash - non_cash_flows
     end
@@ -73,6 +75,10 @@ class Balance::BaseCalculator
       if account.balance_type == :non_cash && account.accountable_type == "Loan"
         non_cash_inflows = txn_inflow_sum.abs
         non_cash_outflows = txn_outflow_sum
+      elsif account.balance_type == :non_cash
+        # Handle other non-cash accounts (Property, Vehicle, OtherAsset, OtherLiability)
+        non_cash_inflows = txn_inflow_sum.abs
+        non_cash_outflows = txn_outflow_sum
       elsif account.balance_type != :non_cash
         cash_inflows = txn_inflow_sum.abs + trade_cash_inflow_sum.abs
         cash_outflows = txn_outflow_sum + trade_cash_outflow_sum
@@ -95,8 +101,12 @@ class Balance::BaseCalculator
 
       if account.balance_type == :non_cash
         0
-      else
+      elsif account.balance_type == :cash
         cash_balance + signed_entry_flows(entries)
+      else
+        # For investment accounts, only apply trade-related cash flows
+        trade_entries = entries.select(&:trade?)
+        cash_balance + signed_entry_flows(trade_entries)
       end
     end
 
@@ -104,6 +114,9 @@ class Balance::BaseCalculator
       entries = sync_cache.get_entries(date)
       # Loans are a special case (loan payment reducing principal, which is non-cash)
       if account.balance_type == :non_cash && account.accountable_type == "Loan"
+        non_cash_balance + signed_entry_flows(entries)
+      elsif account.balance_type == :non_cash
+        # Handle other non-cash accounts (Property, Vehicle, OtherAsset, OtherLiability)
         non_cash_balance + signed_entry_flows(entries)
       elsif account.balance_type == :investment
         # For reverse calculations, we need the previous day's holdings

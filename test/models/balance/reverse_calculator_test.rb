@@ -296,15 +296,15 @@ class Balance::ReverseCalculatorTest < ActiveSupport::TestCase
     )
   end
 
-  test "non cash accounts can only use valuations and transactions will be recorded but ignored for balance calculation" do
+  test "non cash accounts can use transactions to update balance" do
     [ Property, Vehicle, OtherAsset, OtherLiability ].each do |account_type|
       account = create_account_with_ledger(
         account: { type: account_type, balance: 1000, cash_balance: 0, currency: "USD" },
         entries: [
           { type: "current_anchor", date: Date.current, balance: 1000 },
 
-          # Will be ignored for balance calculation due to account type of non-cash
-          { type: "transaction", date: 1.day.ago, amount: -100 }
+          # Transaction now affects balance calculation for non-cash accounts
+          { type: "transaction", date: 1.day.ago, amount: -100 } # Inflow of $100
         ]
       )
 
@@ -323,14 +323,14 @@ class Balance::ReverseCalculatorTest < ActiveSupport::TestCase
           {
             date: 1.day.ago,
             legacy_balances: { balance: 1000, cash_balance: 0 },
-            balances: { start: 1000, start_cash: 0, start_non_cash: 1000, end_cash: 0, end_non_cash: 1000, end: 1000 },
-            flows: 0,
+            balances: { start: 1100, start_cash: 0, start_non_cash: 1100, end_cash: 0, end_non_cash: 1000, end: 1000 },
+            flows: { non_cash_inflows: 100, non_cash_outflows: 0 },
             adjustments: 0
           },
           {
             date: 2.days.ago,
-            legacy_balances: { balance: 1000, cash_balance: 0 },
-            balances: { start: 1000, start_cash: 0, start_non_cash: 1000, end_cash: 0, end_non_cash: 1000, end: 1000 },
+            legacy_balances: { balance: 1100, cash_balance: 0 },
+            balances: { start: 1100, start_cash: 0, start_non_cash: 1100, end_cash: 0, end_non_cash: 1100, end: 1100 },
             flows: 0,
             adjustments: { cash_adjustments: 0, non_cash_adjustments: 0 }
           }
