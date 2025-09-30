@@ -1,25 +1,29 @@
 
 <img width="1190" alt="maybe_hero" src="https://github.com/user-attachments/assets/5ed08763-a9ee-42b2-a436-e05038fcf573" />
 
-# Maybe: The personal finance app for everyone
+# K45-PMS (Personal Money System)
+
+**IMPORTANT: This is a fork of the original Maybe Finance project and is not affiliated with or endorsed by Maybe Finance Inc.**
 
 > [!IMPORTANT]
-> This repository is no longer actively maintained. You can read more about this in our [final release](https://github.com/maybe-finance/maybe/releases/tag/v0.6.0).
+> This repository is a fork of the original Maybe Finance project, which is no longer actively maintained. This fork continues development independently. You can read more about the original project in their [final release](https://github.com/maybe-finance/maybe/releases/tag/v0.6.0).
 
-## Maybe Hosting
+## About K45-PMS
 
-Maybe is a fully working personal finance app that can be [self hosted with Docker](docs/hosting/docker.md).
+This project is a community fork of the original Maybe Finance personal finance application. It maintains the core functionality while continuing development and improvements under the name K45-PMS (Personal Money System).
 
 ## Forking and Attribution
 
-This repo is no longer maintained. You’re free to fork it under the AGPLv3. To stay compliant and avoid trademark issues:
+This repository is a fork of the original [Maybe Finance](https://github.com/maybe-finance/maybe) project. The original project is no longer maintained, but this fork continues the development under a new name to comply with trademark restrictions.
 
-- Be sure to include the original [AGPLv3 license](https://github.com/maybe-finance/maybe/blob/main/LICENSE) and clearly state in your README that your fork is based on Maybe Finance but is **not affiliated with or endorsed by** Maybe Finance Inc.
-- "Maybe" is a trademark of Maybe Finance Inc. and therefore, use of it is NOT allowed in forked repositories (or the logo)
+**Original Attribution:**
+- This fork is based on Maybe Finance but is **not affiliated with or endorsed by** Maybe Finance Inc.
+- The original "Maybe" name and logo are trademarks of Maybe Finance Inc. and are not used in this fork.
+- The original project was distributed under the [AGPLv3 license](https://github.com/maybe-finance/maybe/blob/main/LICENSE).
 
 ## Local Development Setup
 
-**If you are trying to _self-host_ the Maybe app, stop here. You
+**If you are trying to _self-host_ K45-PMS, stop here. You
 should [read this guide to get started](docs/hosting/docker.md).**
 
 The instructions below are for developers to get started with contributing to the app.
@@ -32,7 +36,6 @@ The instructions below are for developers to get started with contributing to th
 After cloning the repo, the basic setup commands are:
 
 ```sh
-cd maybe
 cp .env.local.example .env.local
 bin/setup
 bin/dev
@@ -56,8 +59,8 @@ For further instructions, see guides below.
 - [Windows dev setup guide](https://github.com/maybe-finance/maybe/wiki/Windows-Dev-Setup-Guide)
 - Dev containers - visit [this guide](https://code.visualstudio.com/docs/devcontainers/containers) to learn more
 
-## Copyright & license
+## Copyright & License
 
-Maybe is distributed under
-an [AGPLv3 license](https://github.com/maybe-finance/maybe/blob/main/LICENSE). "
-Maybe" is a trademark of Maybe Finance, Inc.
+This fork is distributed under the same [AGPLv3 license](https://github.com/maybe-finance/maybe/blob/main/LICENSE) as the original project.
+
+**Trademark Notice:** "Maybe" is a trademark of Maybe Finance, Inc. This fork uses a different name to avoid trademark issues.

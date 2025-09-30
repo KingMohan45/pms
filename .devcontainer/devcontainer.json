@@ -1,5 +1,5 @@
 {
-  "name": "Maybe",
+  "name": "K45-PMS",
   "dockerComposeFile": "docker-compose.yml",
   "service": "app",
   "workspaceFolder": "/workspace",

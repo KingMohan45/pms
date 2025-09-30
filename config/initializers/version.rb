@@ -1,4 +1,4 @@
-module Maybe
+module K45Pms
   class << self
     def version
       Semver.new(semver)
